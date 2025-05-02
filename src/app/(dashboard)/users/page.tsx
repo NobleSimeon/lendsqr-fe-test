@@ -9,7 +9,7 @@ const UsersPage = () => {
   // It will be used to display a list of users
   return (
     <>
-      <h1 className="text-2xl font-medium text-[#213F7D] mb-6">Users</h1>
+      <h2 className="text-2xl font-medium text-[#213F7D] mb-6">Users</h2>
       <div className="@container">
         <div className="grid grid-cols-1 @md:grid-cols-2 @2xl:grid-cols-4 gap-4 mb-8">
           <StatCard

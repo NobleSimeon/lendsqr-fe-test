@@ -21,7 +21,6 @@ export default function DashboardLayout({
 
           {/* Main content */}
           <main className="flex-1 p-6 overflow-auto">
-            <SidebarTrigger />
             {children}
           </main>
         </div>
