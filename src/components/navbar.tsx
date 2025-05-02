@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between px-4 md:px-8 h-16">
         <div className="flex items-center gap-1">
           <Link href="/dashboard">
-            <Image src="/Group.svg" alt="Lendsqr" width={120} height={30} />
+            <Image src="/Group.svg" alt="Lendsqr" width={120} height={30} priority /> {/*TODO: https://nextjs.org/docs/api-reference/next/image#priority*/}
             <h1 className="sr-only">Lendsqr</h1>
           </Link>
             <Button
@@ -96,6 +96,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Search Input */}
+    {/* FIXME: Blocked aria-hidden on an element because its descendant retained focus. https://w3c.github.io/aria/#aria-hidden.*/}
       <div
           id="mobile-search-input"
           className={`absolute inset-0 bg-white px-4 flex items-center justify-center transition-transform duration-300 ${
@@ -110,6 +111,8 @@ export default function Navbar() {
           <Input
             placeholder="Search for anything"
             className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            // FIXME: Issues with Aria hidden and focus element ancestor
+            tabIndex={!searchInputState && !isMobile ? -1 : 0}
           />
           <Button
             size="icon"

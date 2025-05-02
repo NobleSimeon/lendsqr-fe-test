@@ -1,9 +1,8 @@
 import StatCard from "@/components/stat-card";
-import { columns } from "@/components/table/column";
 import UserTable from "@/components/table/usertable";
+import { columns } from "@/components/table/column";
 import { usersData } from "@/data";
 import { Landmark, PiggyBank, UserCheck, Users } from "lucide-react";
-import React from "react";
 const UsersPage = () => {
   // This is the main page for the users dashboard
   // It will be used to display a list of users
@@ -38,7 +37,7 @@ const UsersPage = () => {
           />
         </div>
       </div>
-      <UserTable columns={columns} data={usersData} />
+      <UserTable />
     </>
   );
 };
