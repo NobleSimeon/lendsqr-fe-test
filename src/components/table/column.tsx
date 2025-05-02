@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
 import StatusBadge from "../statusBadge";
 
-export const columns: ColumnDef<User>[] = [
+export const columns = (updateStatus: (username: string, newStatus: string) => void): ColumnDef<User>[] => [
   {
     accessorKey: "organization",
     header: "Organization",
@@ -57,8 +57,8 @@ export const columns: ColumnDef<User>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>View Details</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => user.status = "Blacklisted"}>Blacklist User</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => user.status = "Active"}>
+            <DropdownMenuItem onClick={() => updateStatus(user.username, "Blacklisted")}>Blacklist User</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => updateStatus(user.username, "Active")}>
               Activate User
             </DropdownMenuItem>
           </DropdownMenuContent>

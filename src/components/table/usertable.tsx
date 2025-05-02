@@ -1,7 +1,7 @@
 "use client"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { usersData } from "@/data"
+import { columns } from "@/components/table/column";
+import { User, usersData } from "@/data";
 
 import {
   ColumnDef,
@@ -11,20 +11,32 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { DataTablePagination } from "./tablePaginate"
+import { useState } from "react";
 
 
-interface userTableProps<Tuser, TValue> {
-  columns: ColumnDef<Tuser, TValue>[]
-  data: Tuser[]
-}
 
-function UserTable<Tuser, TValue>({
-  columns,
-  data,
-}: userTableProps<Tuser, TValue>) {
+function UserTable() {
+  const [data, setData] = useState<User[]>(usersData);
+  const updateStatus = (username: string, newStatus: string) => {
+    // Validate that newStatus is one of the allowed values
+    if (
+      newStatus === "Inactive" ||
+      newStatus === "Pending" ||
+      newStatus === "Blacklisted" ||
+      newStatus === "Active"
+    ) {
+      setData((prevData) =>
+        prevData.map((user) =>
+          user.username === username ? { ...user, status: newStatus } : user
+        )
+      );
+    } else {
+      console.error(`Invalid status: ${newStatus}`);
+    }
+  };
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(updateStatus), // Pass the updateStatus function
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
