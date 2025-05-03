@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import Navbar from "@/components/navbar";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {  SidebarProvider } from "@/components/ui/sidebar";
+import { GlobalFilterProvider } from "@/context/FilterContext";
 
 export default function DashboardLayout({
   children,
@@ -9,6 +10,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <SidebarProvider>
+      <GlobalFilterProvider>
       {/* Main container */}
       <div className="min-h-screen relative flex flex-col bg-[#FBFBFB] w-full">
         {/* Navbar at the top */}
@@ -25,6 +27,7 @@ export default function DashboardLayout({
           </main>
         </div>
       </div>
+      </GlobalFilterProvider>
     </SidebarProvider>
   );
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { User } from "@/data";
 import { ColumnDef } from "@tanstack/react-table";
 import {
@@ -10,36 +10,105 @@ import {
 import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
 import StatusBadge from "../statusBadge";
+import FilterSVG from "../../../public/icons/FilterSVG";
 
-export const columns = (updateStatus: (username: string, newStatus: string) => void): ColumnDef<User>[] => [
+export const columns = (
+  updateStatus: (username: string, newStatus: string) => void,
+  handleFilterClick: () => void
+): ColumnDef<User>[] => [
   {
     accessorKey: "organization",
-    header: "Organization",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Organization
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
   },
   {
     accessorKey: "username",
-    header: "Username",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Username
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Email
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
   },
   {
     accessorKey: "phoneNumber",
-    header: "Phone Number",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Phone Number
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
   },
   {
     accessorKey: "dateJoined",
-    header: "Date Joined",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Date Joined
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => (
+      <div className="flex items-center gap-1">
+        Status
+        <button
+          onClick={() => {
+            return handleFilterClick();
+          }}
+        >
+          <FilterSVG className="h-4 w-4 ml-2" />
+        </button>
+      </div>
+    ),
     cell: ({ row }) => {
       const user = row.original;
       return <StatusBadge status={user.status} />;
     },
-
   },
   {
     id: "actions",
@@ -57,8 +126,14 @@ export const columns = (updateStatus: (username: string, newStatus: string) => v
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>View Details</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => updateStatus(user.username, "Blacklisted")}>Blacklist User</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => updateStatus(user.username, "Active")}>
+            <DropdownMenuItem
+              onClick={() => updateStatus(user.username, "Blacklisted")}
+            >
+              Blacklist User
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => updateStatus(user.username, "Active")}
+            >
               Activate User
             </DropdownMenuItem>
           </DropdownMenuContent>

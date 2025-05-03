@@ -1,9 +1,12 @@
 import StatCard from "@/components/stat-card";
+import TableSkeleton from "@/components/table/TableSkeleton";
 import UserTable from "@/components/table/usertable";
-import { columns } from "@/components/table/column";
-import { usersData } from "@/data";
+import { getUsers } from "@/lib/getUsers";
 import { Landmark, PiggyBank, UserCheck, Users } from "lucide-react";
+import { Suspense } from "react";
 const UsersPage = () => {
+  //https://run.mocky.io/v3/044a3e86-b14c-4bd0-9b82-0c27e7bd5811
+  const usersDataPromise = getUsers();
   // This is the main page for the users dashboard
   // It will be used to display a list of users
   return (
@@ -37,7 +40,9 @@ const UsersPage = () => {
           />
         </div>
       </div>
-      <UserTable />
+      <Suspense fallback={<TableSkeleton />}>
+        <UserTable usersData={usersDataPromise} />
+      </Suspense>
     </>
   );
 };

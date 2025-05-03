@@ -1,22 +1,63 @@
 "use client"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { columns } from "@/components/table/column";
-import { User, usersData } from "@/data";
+import { User} from "@/data";
 
 import {
-  ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 import { DataTablePagination } from "./tablePaginate"
-import { useState } from "react";
+import { use, useState} from "react";
+import { useGlobalFilter } from "@/context/FilterContext";
+import FilterForm from "./filter-form";
+import useFilterSettings, { FilterValues } from "@/hooks/useFilterSettings";
 
 
+function UserTable({ usersData }: { usersData: Promise<User[]> }) {
+  const data = use(usersData);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
+  const {isFilterOpen, setIsFilterOpen, handleFilterClick} = useFilterSettings()
+  const {globalFilter, setGlobalFilter} = useGlobalFilter()
+  const [users, setUsers] = useState(data);
 
-function UserTable() {
-  const [data, setData] = useState<User[]>(usersData);
+  const handleFilter = (filters: FilterValues) => {
+    const newFilters = [];
+
+    if (filters.organization) {
+      newFilters.push({ id: "organization", value: filters.organization });
+    }
+    if (filters.username) {
+      newFilters.push({ id: "username", value: filters.username });
+    }
+    if (filters.email) {
+      newFilters.push({ id: "email", value: filters.email });
+    }
+    if (filters.phoneNumber) {
+      newFilters.push({ id: "phoneNumber", value: filters.phoneNumber });
+    }
+    if (filters.status) {
+      newFilters.push({ id: "status", value: filters.status });
+    }
+    if (filters.date) {
+      newFilters.push({
+        id: "dateJoined",
+        value: filters.date.toISOString().split("T")[0], // Format date to YYYY-MM-DD
+      });
+    }
+
+    setColumnFilters(newFilters); // Update column filters
+  };
+  const clearFilters = () => {
+    setColumnFilters([]); // Clear all column filters
+  };
+  
   const updateStatus = (username: string, newStatus: string) => {
     // Validate that newStatus is one of the allowed values
     if (
@@ -25,7 +66,7 @@ function UserTable() {
       newStatus === "Blacklisted" ||
       newStatus === "Active"
     ) {
-      setData((prevData) =>
+      setUsers((prevData) =>
         prevData.map((user) =>
           user.username === username ? { ...user, status: newStatus } : user
         )
@@ -35,21 +76,30 @@ function UserTable() {
     }
   };
   const table = useReactTable({
-    data,
-    columns: columns(updateStatus), // Pass the updateStatus function
+    data: users,
+    columns: columns(updateStatus, handleFilterClick), // Pass the updateStatus function
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      globalFilter,
+      columnFilters
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
   })
 
   return (
-    <div className="rounded-md border">
+    <div className="bg-white rounded-md shadow-sm relative mb-20">
+      {/* Filter Form - Always positioned on the left */}
+      <FilterForm isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} onFilter={handleFilter} onClearFilters={clearFilters}/>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-xs font-semibold text-[#545F7D]">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -70,7 +120,7 @@ function UserTable() {
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="text-sm text-[#545F7D]">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
