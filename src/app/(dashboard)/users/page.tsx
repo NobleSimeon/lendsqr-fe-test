@@ -1,9 +1,8 @@
 import StatCard from "@/components/stat-card";
-import TableSkeleton from "@/components/table/TableSkeleton";
 import UserTable from "@/components/table/usertable";
 import { getUsers } from "@/lib/getUsers";
 import { Landmark, PiggyBank, UserCheck, Users } from "lucide-react";
-import { Suspense } from "react";
+
 const UsersPage = async() => {
   //https://run.mocky.io/v3/044a3e86-b14c-4bd0-9b82-0c27e7bd5811
   const usersData = await getUsers();
