@@ -12,20 +12,19 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { DataTablePagination } from "./tablePaginate"
-import { use, useState} from "react";
+import { useState} from "react";
 import { useGlobalFilter } from "@/context/FilterContext";
 import FilterForm from "./filter-form";
 import useFilterSettings, { FilterValues } from "@/hooks/useFilterSettings";
 
 
-function UserTable({ usersData }: { usersData: Promise<User[]> }) {
-  const data = use(usersData);
+function UserTable({usersData}: {usersData: User[]}) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
   const {isFilterOpen, setIsFilterOpen, handleFilterClick} = useFilterSettings()
   const {globalFilter, setGlobalFilter} = useGlobalFilter()
-  const [users, setUsers] = useState(data);
+  const [users, setUsers] = useState(usersData) // Initialize users state with usersData prop;
 
   const handleFilter = (filters: FilterValues) => {
     const newFilters = [];
