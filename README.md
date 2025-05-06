@@ -34,3 +34,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+I don't know whether to use ID and refetch the data or pass the data as searchParams. Fetching the whole User Data again, might give the picture of fetching a specify user like in real project. I don't know if it will work but I will try sending the data via the searchParam. But I should save my solution of fetching the data again

@@ -1,5 +1,5 @@
 export async function getUsers() {
-  const response = await fetch("https://run.mocky.io/v3/044a3e86-b14c-4bd0-9b82-0c27e7bd5811", {
+  const response = await fetch("https://run.mocky.io/v3/c570ce27-bed9-42bd-b685-1f4cfd30a0f3", {
     cache: "no-store", // Ensure fresh data is fetched on every request
   });
 
