@@ -13,6 +13,25 @@ interface Props {
 export default function UserActionsCell({ user, updateStatus }: Props) {
   const router = useRouter();
 
+  const handleViewDetails = () => {
+    // Split username to get first and last name
+    const [firstName, lastName] = user.username.split(' ');
+
+    // Create URL parameters with user data
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      status: user.status,
+      dateJoined: user.dateJoined,
+      organization: user.organization,
+    });
+
+    // Navigate to user details page with ID and search params
+    router.push(`/users/${user.id}?${params.toString()}`);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +41,7 @@ export default function UserActionsCell({ user, updateStatus }: Props) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => router.push(`/users/${user.id}`)}>
+        <DropdownMenuItem onClick={handleViewDetails}>
           View Details
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => updateStatus(user.username, "Blacklisted")}>

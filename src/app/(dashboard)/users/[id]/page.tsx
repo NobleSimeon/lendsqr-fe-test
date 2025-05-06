@@ -6,31 +6,68 @@ import { ArrowLeft, Star, StarHalf } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { getUserById } from "@/lib/getUserById"
+import { useSearchParams } from "next/navigation"
 
 interface UserDetailsProps {
-params: Promise<{
+  params: Promise<{
     id: string
-}>
+  }>
 }
 
 export default function UserDetailsPage({ params }: UserDetailsProps) {
-  // In a real app, you would fetch user data based on the ID
-  // For this example, we'll use mock data
   const [userId, setUserId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Resolve the params Promise and extract the ID
     params.then((resolvedParams) => {
       setUserId(resolvedParams.id);
     });
   }, [params]);
 
-  // Mock function to fetch user data
-  const user = userId ? getUserById(userId) : null;
+  // Get user data from URL parameters
+  const userData = {
+    id: userId,
+    firstName: searchParams.get('firstName') || '',
+    lastName: searchParams.get('lastName') || '',
+    email: searchParams.get('email') || '',
+    phoneNumber: searchParams.get('phoneNumber') || '',
+    status: searchParams.get('status') || '',
+    dateJoined: searchParams.get('dateJoined') || '',
+    organization: searchParams.get('organization') || '',
+    // Dummy data for missing fields
+    accountNumber: "LSQTf1PF",
+    accountBalance: "200,000.00",
+    bankName: "Providus Bank",
+    bvn: "07060780922",
+    gender: "Female",
+    maritalStatus: "Single",
+    children: "None",
+    residence: "Parent's Apartment",
+    education: {
+      level: "B.Sc",
+      employmentStatus: "Employed",
+      sector: "FinTech",
+      duration: "2 years",
+      officeEmail: "grace@lendsqr.com",
+      monthlyIncome: "₦200,000.00 - ₦400,000.00",
+      loanRepayment: "40,000",
+    },
+    socials: {
+      twitter: "@grace_effiom",
+      facebook: "Grace Effiom",
+      instagram: "@grace_effiom",
+    },
+    guarantor: {
+      firstName: "Debby",
+      lastName: "Ogana",
+      phoneNumber: "07060780922",
+      email: "debby@gmail.com",
+      relationship: "Sister",
+    },
+  };
 
-  if (!user) {
-    return <div className="p-8">User not found</div>
+  if (!userId) {
+    return <div className="p-8">Loading...</div>
   }
 
   return (
@@ -63,15 +100,15 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
               <AvatarFallback className="bg-[#213F7D]/10 text-[#213F7D] text-xl">
-                {user.firstName.charAt(0)}
-                {user.lastName.charAt(0)}
+                {userData.firstName.charAt(0)}
+                {userData.lastName.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div>
               <h2 className="text-xl font-medium text-[#213F7D]">
-                {user.firstName} {user.lastName}
+                {userData.firstName} {userData.lastName}
               </h2>
-              <p className="text-sm text-[#545F7D]">{user.accountNumber}</p>
+              <p className="text-sm text-[#545F7D]">{userData.accountNumber}</p>
             </div>
           </div>
 
@@ -87,8 +124,8 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
 
           {/* User balance */}
           <div>
-            <p className="text-xl font-medium text-[#213F7D]">₦{user.accountBalance}</p>
-            <p className="text-sm text-[#545F7D]">{user.bankName}/Nigeria</p>
+            <p className="text-xl font-medium text-[#213F7D]">₦{userData.accountBalance}</p>
+            <p className="text-sm text-[#545F7D]">{userData.bankName}/Nigeria</p>
           </div>
         </div>
 
@@ -116,36 +153,36 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
                   <p className="text-base text-[#545F7D]">
-                    {user.firstName} {user.lastName}
+                    {userData.firstName} {userData.lastName}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
-                  <p className="text-base text-[#545F7D]">{user.phoneNumber}</p>
+                  <p className="text-base text-[#545F7D]">{userData.phoneNumber}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
-                  <p className="text-base text-[#545F7D]">{user.email}</p>
+                  <p className="text-base text-[#545F7D]">{userData.email}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">BVN</p>
-                  <p className="text-base text-[#545F7D]">{user.bvn}</p>
+                  <p className="text-base text-[#545F7D]">{userData.bvn}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Gender</p>
-                  <p className="text-base text-[#545F7D]">{user.gender}</p>
+                  <p className="text-base text-[#545F7D]">{userData.gender}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Marital Status</p>
-                  <p className="text-base text-[#545F7D]">{user.maritalStatus}</p>
+                  <p className="text-base text-[#545F7D]">{userData.maritalStatus}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Children</p>
-                  <p className="text-base text-[#545F7D]">{user.children}</p>
+                  <p className="text-base text-[#545F7D]">{userData.children}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Type of Residence</p>
-                  <p className="text-base text-[#545F7D]">{user.residence}</p>
+                  <p className="text-base text-[#545F7D]">{userData.residence}</p>
                 </div>
               </div>
             </div>
@@ -156,31 +193,31 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Level of Education</p>
-                  <p className="text-base text-[#545F7D]">{user.education.level}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.level}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Employment Status</p>
-                  <p className="text-base text-[#545F7D]">{user.education.employmentStatus}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.employmentStatus}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Sector of Employment</p>
-                  <p className="text-base text-[#545F7D]">{user.education.sector}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.sector}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Duration of Employment</p>
-                  <p className="text-base text-[#545F7D]">{user.education.duration}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.duration}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Office Email</p>
-                  <p className="text-base text-[#545F7D]">{user.education.officeEmail}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.officeEmail}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Monthly Income</p>
-                  <p className="text-base text-[#545F7D]">{user.education.monthlyIncome}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.monthlyIncome}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Loan Repayment</p>
-                  <p className="text-base text-[#545F7D]">{user.education.loanRepayment}</p>
+                  <p className="text-base text-[#545F7D]">{userData.education.loanRepayment}</p>
                 </div>
               </div>
             </div>
@@ -191,15 +228,15 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-8">
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Twitter</p>
-                  <p className="text-base text-[#545F7D]">{user.socials.twitter}</p>
+                  <p className="text-base text-[#545F7D]">{userData.socials.twitter}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Facebook</p>
-                  <p className="text-base text-[#545F7D]">{user.socials.facebook}</p>
+                  <p className="text-base text-[#545F7D]">{userData.socials.facebook}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Instagram</p>
-                  <p className="text-base text-[#545F7D]">{user.socials.instagram}</p>
+                  <p className="text-base text-[#545F7D]">{userData.socials.instagram}</p>
                 </div>
               </div>
             </div>
@@ -211,20 +248,20 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
                   <p className="text-base text-[#545F7D]">
-                    {user.guarantor.firstName} {user.guarantor.lastName}
+                    {userData.guarantor.firstName} {userData.guarantor.lastName}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.phoneNumber}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.phoneNumber}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.email}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.email}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Relationship</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.relationship}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.relationship}</p>
                 </div>
               </div>
             </div>
@@ -235,20 +272,20 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
                   <p className="text-base text-[#545F7D]">
-                    {user.guarantor.firstName} {user.guarantor.lastName}
+                    {userData.guarantor.firstName} {userData.guarantor.lastName}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.phoneNumber}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.phoneNumber}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.email}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.email}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[#545F7D] uppercase mb-2">Relationship</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.relationship}</p>
+                  <p className="text-base text-[#545F7D]">{userData.guarantor.relationship}</p>
                 </div>
               </div>
             </div>
