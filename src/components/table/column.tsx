@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@/data";
+import type { User } from "@/data";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
 import StatusBadge from "../statusBadge";
 import FilterSVG from "../../../public/icons/FilterSVG";
+import { useRouter } from "next/navigation";
 
 export const columns = (
   updateStatus: (username: string, newStatus: string) => void,
@@ -115,6 +116,7 @@ export const columns = (
     header: () => <div className="sr-only">Actions</div>,
     cell: ({ row }) => {
       const user = row.original;
+      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -125,7 +127,9 @@ export const columns = (
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>View Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push(`/users/${user.id}`)}>
+              View Details
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => updateStatus(user.username, "Blacklisted")}
             >
