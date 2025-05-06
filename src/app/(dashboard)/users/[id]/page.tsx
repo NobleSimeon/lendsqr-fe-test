@@ -7,42 +7,46 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { getUserById } from "@/lib/getUserById"
+import { UserDetails } from "@/data"
+import Loading from "../loading"
 
 interface UserDetailsProps {
-params: Promise<{
+  params: Promise<{
     id: string
-}>
+  }>
 }
 
 export default function UserDetailsPage({ params }: UserDetailsProps) {
-  // In a real app, you would fetch user data based on the ID
-  // For this example, we'll use mock data
-  const [userId, setUserId] = useState<string | null>(null);
+  const [user, setUser] = useState<UserDetails | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Resolve the params Promise and extract the ID
-    params.then((resolvedParams) => {
-      setUserId(resolvedParams.id);
-    });
+    const fetchUser = async () => {
+      try {
+        const resolvedParams = await params;
+        const userData = await getUserById(resolvedParams.id);
+        setUser(userData);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
   }, [params]);
 
-  // Mock function to fetch user data
-  const user = userId ? getUserById(userId) : null;
+  if (loading) {
+    return <Loading />
+  }
 
   if (!user) {
-    return <div className="p-8">User not found</div>
+    return <div className="p-8">User not found, Kindly go back to the users page</div>
   }
 
   return (
-    <div className="space-y-6">
+    <>
       {/* Back button */}
-      <Link
-        href="/users"
-        className="inline-flex items-center text-[#545F7D] hover:text-[#213F7D] transition-colors"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        <span>Back to Users</span>
-      </Link>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h1 className="text-2xl font-medium text-[#213F7D]">User Details</h1>
@@ -207,49 +211,29 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
             {/* Guarantor */}
             <div className="mb-8 pt-6 border-t">
               <h3 className="text-base font-medium text-[#213F7D] mb-6">Guarantor</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
-                  <p className="text-base text-[#545F7D]">
-                    {user.guarantor.firstName} {user.guarantor.lastName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.phoneNumber}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.email}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Relationship</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.relationship}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Second Guarantor */}
-            <div className="pt-6 border-t">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
-                  <p className="text-base text-[#545F7D]">
-                    {user.guarantor.firstName} {user.guarantor.lastName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.phoneNumber}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.email}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#545F7D] uppercase mb-2">Relationship</p>
-                  <p className="text-base text-[#545F7D]">{user.guarantor.relationship}</p>
-                </div>
+              <div className="space-y-6 divide-y">
+                {user.guarantor.map((guarantor, i) => {
+                  return (<div key={i} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
+                  <div>
+                    <p className="text-xs text-[#545F7D] uppercase mb-2">Full Name</p>
+                    <p className="text-base text-[#545F7D]">
+                      {guarantor.firstName} {guarantor.lastName}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[#545F7D] uppercase mb-2">Phone Number</p>
+                    <p className="text-base text-[#545F7D]">{guarantor.phoneNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[#545F7D] uppercase mb-2">Email Address</p>
+                    <p className="text-base text-[#545F7D]">{guarantor.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[#545F7D] uppercase mb-2">Relationship</p>
+                    <p className="text-base text-[#545F7D]">{guarantor.relationship}</p>
+                  </div>
+                </div>)
+                })}
               </div>
             </div>
           </TabsContent>
@@ -285,7 +269,7 @@ export default function UserDetailsPage({ params }: UserDetailsProps) {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </>
   )
 }
 
