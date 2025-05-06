@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const SignInPage = () => {
   return (
-    <div className="w-full md:w-1/2 p-8 md:p-16 md:pt-0 flex items-center">
+    <div className="w-full p-8 md:p-16 md:pt-0 flex items-center justify-center md:justify-start">
       <div className="w-full max-w-md">
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-lendsqr-primary-accent mb-2">Welcome!</h1>

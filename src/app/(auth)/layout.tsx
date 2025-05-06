@@ -28,7 +28,7 @@ export default function AuthLayout({
       </div>
 
       {/* Right section with login form */}
-      <main>{children}</main>
+      <main className="flex w-full md:w-1/2 items-center justify-center min-h-screen">{children}</main>
     </div>
   );
 }
