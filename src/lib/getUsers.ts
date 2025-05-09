@@ -1,5 +1,14 @@
 export async function getUsers() {
-  const response = await fetch("https://run.mocky.io/v3/c570ce27-bed9-42bd-b685-1f4cfd30a0f3", {
+  const apiToken = process.env.NEXT_PUBLIC_API_TOKEN;
+  
+  if (!apiToken) {
+    throw new Error("API token is not configured");
+  }
+
+  const response = await fetch("https://api.json-generator.com/templates/G-R-fMjase-q/data", {
+    headers: {
+      "Authorization": `Bearer ${apiToken}`
+    },
     cache: "no-store", // Ensure fresh data is fetched on every request
   });
 

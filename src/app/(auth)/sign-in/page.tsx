@@ -1,8 +1,17 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useState } from "react";
 
 const SignInPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    redirect('/users');
+  };
   return (
     <div className="w-full p-8 md:p-16 md:pt-0 flex items-center justify-center md:justify-start">
       <div className="w-full max-w-md">
@@ -11,7 +20,7 @@ const SignInPage = () => {
           <p className="text-lendsqr-primary-neutral-100">Enter details to login.</p>
         </div>
 
-        <form className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <Input
               type="email"
@@ -22,15 +31,16 @@ const SignInPage = () => {
 
           <div className="relative">
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               className="h-12 border-lendsqr-primary-neutral/20 focus-visible:ring-lendsqr-primary-green"
             />
             <button
               type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lendsqr-primary-green text-xs font-bold uppercase"
             >
-              Show
+              {showPassword ? "Hide" : "Show"}
             </button>
           </div>
 

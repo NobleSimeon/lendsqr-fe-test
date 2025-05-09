@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import * as React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 function Calendar({
   className,
@@ -15,6 +15,9 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker>) {
   return (
     <DayPicker
+      captionLayout="dropdown-buttons"
+      defaultMonth={new Date(2020, 6)}
+      fromYear={2020}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -61,15 +64,21 @@ function Calendar({
       }}
       components={{
         IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
+          <div>
+            <ChevronLeft className={cn("size-4", className)} {...props} />
+            <span className="sronly">Go to the previous Month</span>
+          </div>
         ),
         IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
+          <div>
+            <ChevronRight className={cn("size-4", className)} {...props} />
+            <span className="sronly">Go to the Next Month</span>
+          </div>
         ),
       }}
       {...props}
     />
-  )
+  );
 }
 
-export { Calendar }
+export { Calendar };

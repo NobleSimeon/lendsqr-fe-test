@@ -5,7 +5,7 @@ export async function getUserById(id: string) :Promise<UserDetails | null> {
   try {
     const users: User[] = await getUsers();
     console.log("users when I got the users again", users)
-    const user = users.find(u  => u.id === parseInt(id));
+    const user = users.find(u  => u.id === id);
     console.log("user", user)
     
     if (!user) return null;

@@ -48,8 +48,7 @@ function SheetContent({
   className,
   children,
   side = "right",
-  //FIXME: add title prop to content
-  title = "Dialog Title",
+  title = "Lendsqr",
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
@@ -73,7 +72,6 @@ function SheetContent({
         )}
         {...props}
       >
-        {/* FIXME:  */}
         <SheetPrimitive.Title className="sr-only">{title}</SheetPrimitive.Title>
         {children}
         <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">

@@ -80,6 +80,12 @@ function UserTable({usersData}: {usersData: User[]}) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 50,
+      },
+    },
     state: {
       globalFilter,
       columnFilters

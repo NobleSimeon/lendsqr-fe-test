@@ -70,7 +70,7 @@ export default function FilterForm({ isOpen, onClose, onFilter, onClearFilters }
             <SelectContent>
               <SelectItem value="lendsqr">Lendsqr</SelectItem>
               <SelectItem value="irorun">Irorun</SelectItem>
-              <SelectItem value="lendstar">Lendstar</SelectItem>
+              <SelectItem value="Fastpay">Fastpay</SelectItem>
             </SelectContent>
           </Select>
         </div>
